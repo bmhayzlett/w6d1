@@ -57,6 +57,7 @@
 	var game = new Game(5);
 
 	var gameView = new GameView(ctx,game);
+
 	// debugger;
 	gameView.start();
 
@@ -81,7 +82,8 @@
 
 	MovingObject.prototype.draw = function(ctx) {
 	  ctx.fillStyle = this.color;
-	  ctx.arc(this.pos[0],this.pos[1],this.radius, 0,2*Math.PI);
+	  ctx.beginPath();
+	  ctx.arc(this.pos[0],this.pos[1],this.radius,2*Math.PI,0, true);
 	  ctx.fill();
 	};
 
@@ -186,8 +188,8 @@
 	var Asteroid = __webpack_require__(3);
 	function Game(numAsteroids) {
 	  this.numAsteroids = numAsteroids;
-	  this.dimX = 1000;
-	  this.dimY = 1000;
+	  this.dimX = 600;
+	  this.dimY = 600;
 	  this.asteroids = [];
 	  this.addAsteroid();
 	}
@@ -205,23 +207,27 @@
 	};
 
 	Game.prototype.draw = function (ctx) {
-	  ctx.clearRect(0,0,this.dimX, this.dimY);
-	  for (var i; i < this.asteroids.length; i++) {
+	  ctx.clearRect(0,0,this.dimX * 2, this.dimY * 2);
+	  for (var i = 0; i < this.asteroids.length; i++) {
 	    this.asteroids[i].draw(ctx);
 	  }
 	};
 
 	Game.prototype.moveObjects = function() {
-	  for (var i; i < this.asteroids.length; i++) {
+	  for (var i = 0; i < this.asteroids.length; i++) {
 	    this.asteroids[i].move();
-	    var pos = this.asteroid[i].pos;
-	    this.asteroid[i].pos = this.wrap(pos);
+	    var pos = this.asteroids[i].pos;
+	    this.asteroids[i].pos = this.wrap(pos);
 	  }
 	};
 
 	Game.prototype.wrap = function (pos) {
+
 	  var xpos = pos[0] % this.dimX;
 	  var ypos = pos[1] % this.dimY;
+	  if (xpos < 0) xpos = this.dimX - 1;
+	  if (ypos < 0) ypos = this.dimY - 1;
+
 	  return [xpos, ypos];
 	};
 

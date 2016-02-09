@@ -11,6 +11,7 @@ var ctx = canvas.getContext('2d');
 var game = new Game(5);
 
 var gameView = new GameView(ctx,game);
+
 // debugger;
 gameView.start();
 
